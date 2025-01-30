@@ -11,7 +11,6 @@ const createAdminInDb = async (payload: CreateAdminBody) => {
 
   const userData = {
     email: payload.admin.email,
-    name: payload.admin.name,
     password: hashedPassword,
     role: UserRole.ADMIN,
   };
@@ -23,6 +22,7 @@ const createAdminInDb = async (payload: CreateAdminBody) => {
 
     const createdAdminData = await transactionClient.admin.create({
       data: {
+        name: payload.admin.name,
         userId: userInsertData.id,
         avatar: payload.admin.avatar,
       },

@@ -64,7 +64,7 @@ const createLearnerValidationSchema = z.object({
     password: z.string({
       required_error: "Password is required",
     }),
-    customer: z.object({
+    learner: z.object({
       name: z.string({
         required_error: "Name is required!",
       }),

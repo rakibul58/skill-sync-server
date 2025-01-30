@@ -31,6 +31,60 @@ const loginUser = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const registerTeacher = catchAsync(async (req: Request, res: Response) => {
+  const result = await AuthServices.teacherRegistration(req.body);
+
+  const { refreshToken, accessToken } = result;
+
+  res.cookie("accessToken", accessToken, {
+    secure: config.env === "development" ? false : true,
+    httpOnly: true,
+  });
+
+  res.cookie("refreshToken", refreshToken, {
+    secure: config.env === "development" ? false : true,
+    httpOnly: true,
+  });
+
+  sendResponse(res, {
+    statusCode: StatusCodes.CREATED,
+    success: true,
+    message: "Registered successfully!",
+    data: {
+      accessToken: result.accessToken,
+      refreshToken: result.refreshToken,
+    },
+  });
+});
+
+const registerLearner = catchAsync(async (req: Request, res: Response) => {
+  const result = await AuthServices.learnerRegistration(req.body);
+
+  const { refreshToken, accessToken } = result;
+
+  res.cookie("accessToken", accessToken, {
+    secure: config.env === "development" ? false : true,
+    httpOnly: true,
+  });
+
+  res.cookie("refreshToken", refreshToken, {
+    secure: config.env === "development" ? false : true,
+    httpOnly: true,
+  });
+
+  sendResponse(res, {
+    statusCode: StatusCodes.CREATED,
+    success: true,
+    message: "Registered successfully!",
+    data: {
+      accessToken: result.accessToken,
+      refreshToken: result.refreshToken,
+    },
+  });
+});
+
 export const AuthControllers = {
   loginUser,
+  registerTeacher,
+  registerLearner,
 };

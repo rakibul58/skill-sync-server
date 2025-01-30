@@ -1,39 +1,11 @@
-/*
-  Warnings:
-
-  - You are about to drop the `Admin` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `Learner` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `Teacher` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `User` table. If the table is not empty, all the data it contains will be lost.
-
-*/
--- DropForeignKey
-ALTER TABLE "Admin" DROP CONSTRAINT "Admin_userId_fkey";
-
--- DropForeignKey
-ALTER TABLE "Learner" DROP CONSTRAINT "Learner_userId_fkey";
-
--- DropForeignKey
-ALTER TABLE "Teacher" DROP CONSTRAINT "Teacher_userId_fkey";
-
--- DropTable
-DROP TABLE "Admin";
-
--- DropTable
-DROP TABLE "Learner";
-
--- DropTable
-DROP TABLE "Teacher";
-
--- DropTable
-DROP TABLE "User";
+-- CreateEnum
+CREATE TYPE "UserRole" AS ENUM ('ADMIN', 'TEACHER', 'LEARNER');
 
 -- CreateTable
 CREATE TABLE "users" (
     "id" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
-    "name" TEXT NOT NULL,
     "role" "UserRole" NOT NULL,
     "lastActivityLog" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -45,6 +17,7 @@ CREATE TABLE "users" (
 -- CreateTable
 CREATE TABLE "admins" (
     "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
     "avatar" TEXT,
     "userId" TEXT NOT NULL,
 
@@ -54,6 +27,7 @@ CREATE TABLE "admins" (
 -- CreateTable
 CREATE TABLE "teachers" (
     "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "bio" TEXT,
     "expertise" TEXT,
@@ -68,6 +42,7 @@ CREATE TABLE "teachers" (
 -- CreateTable
 CREATE TABLE "learners" (
     "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "bio" TEXT,
     "interests" TEXT[],

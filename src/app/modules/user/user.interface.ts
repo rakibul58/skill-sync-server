@@ -39,7 +39,7 @@ interface UpdateTeacherBody {
 
 interface CreateLearnerBody {
   password: string;
-  customer: {
+  learner: {
     name: string;
     email: string;
     bio?: string;
