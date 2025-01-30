@@ -83,8 +83,38 @@ const registerLearner = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const refreshToken = catchAsync(async (req: Request, res: Response) => {
+  const { refreshToken } = req.cookies;
+
+  const result = await AuthServices.refreshToken(refreshToken);
+
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: "Access token generated successfully!",
+    data: result,
+  });
+});
+
+const changePassword = catchAsync(
+  async (req: Request & { user?: any }, res: Response) => {
+    const user = req.user;
+
+    const result = await AuthServices.changePassword(user, req.body);
+
+    sendResponse(res, {
+      statusCode: StatusCodes.OK,
+      success: true,
+      message: "Password changed successfully",
+      data: result,
+    });
+  }
+);
+
 export const AuthControllers = {
   loginUser,
   registerTeacher,
   registerLearner,
+  refreshToken,
+  changePassword
 };
