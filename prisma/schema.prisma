@@ -32,6 +32,7 @@ model User {
   adminProfile   Admin?
   teacherProfile Teacher?
   learnerProfile Learner?
+
   @@index([email])
   @@map("users")
 }
@@ -41,7 +42,9 @@ model Admin {
   avatar String?
   user   User    @relation(fields: [userId], references: [id])
   userId String  @unique
+
   @@index([userId])
+  @@map("admins")
 }
 
 model Teacher {
@@ -54,6 +57,8 @@ model Teacher {
   avatar            String?
   rating            Float?  @default(0)
   isVerified        Boolean @default(false)
+
+  @@map("teachers")
 }
 
 model Learner {
@@ -63,5 +68,7 @@ model Learner {
   bio       String?
   interests String[]
   avatar    String?
+
   @@index([userId])
+  @@map("learners")
 }
