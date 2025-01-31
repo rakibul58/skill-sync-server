@@ -66,7 +66,7 @@ const getLearnerCalendarEvents = async (user: JwtPayload) => {
   }));
 };
 
-const getAdminCalendarEvents = async (filters: CalendarFilterRequest) => {
+const getAdminCalendarEvents = async () => {
   const sessions = await prisma.session.findMany({
     where: {
       status: "CONFIRMED",
@@ -205,7 +205,7 @@ const updateSession = async (sessionId: string, data: UpdateSessionBody) => {
   return result;
 };
 
-export const CalendarService = {
+export const SessionService = {
   getTeacherCalendarEvents,
   getLearnerCalendarEvents,
   getAdminCalendarEvents,
