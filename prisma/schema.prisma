@@ -48,29 +48,133 @@ model Admin {
 }
 
 model Teacher {
-  id                String  @id @default(uuid())
+  id                String             @id @default(uuid())
   name              String
-  user              User    @relation(fields: [userId], references: [id])
-  userId            String  @unique
+  user              User               @relation(fields: [userId], references: [id])
+  userId            String             @unique
   bio               String?
   expertise         String?
   yearsOfExperience Int?
   avatar            String?
-  rating            Float?  @default(0)
-  isVerified        Boolean @default(false)
+  rating            Float?             @default(0)
+  isVerified        Boolean            @default(false)
+  userSkill         UserSkill[]
+  session           Session[]
+  review            Review[]
+  availabilitySlot  AvailabilitySlot[]
 
   @@map("teachers")
 }
 
 model Learner {
-  id        String   @id @default(uuid())
+  id        String    @id @default(uuid())
   name      String
-  user      User     @relation(fields: [userId], references: [id])
-  userId    String   @unique
+  user      User      @relation(fields: [userId], references: [id])
+  userId    String    @unique
   bio       String?
   interests String[]
   avatar    String?
+  session   Session[]
+  review    Review[]
 
   @@index([userId])
   @@map("learners")
+}
+
+model Skill {
+  id          String      @id @default(uuid())
+  name        String      @unique
+  description String?
+  category    Category    @relation(fields: [categoryId], references: [id])
+  categoryId  String
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  userSkill   UserSkill[]
+  session     Session[]
+
+  @@index([categoryId])
+  @@map("skills")
+}
+
+model UserSkill {
+  id          String   @id @default(uuid())
+  teacher     Teacher  @relation(fields: [teacherId], references: [id])
+  teacherId   String
+  skill       Skill    @relation(fields: [skillId], references: [id])
+  skillId     String
+  proficiency Int      @default(1)
+  verified    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([teacherId, skillId])
+  @@map("user_skills")
+}
+
+model Category {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  description String?
+  skills      Skill[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("categories")
+}
+
+model Session {
+  id        String        @id @default(uuid())
+  teacher   Teacher       @relation(fields: [teacherId], references: [id])
+  teacherId String
+  learner   Learner       @relation(fields: [learnerId], references: [id])
+  learnerId String
+  skill     Skill         @relation(fields: [skillId], references: [id])
+  skillId   String
+  startTime DateTime
+  endTime   DateTime
+  status    SessionStatus @default(PENDING)
+  notes     String?
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+
+  review Review?
+
+  @@map("sessions")
+}
+
+model Review {
+  id        String   @id @default(uuid())
+  session   Session  @relation(fields: [sessionId], references: [id])
+  sessionId String   @unique
+  learner   Learner  @relation(fields: [learnerId], references: [id])
+  learnerId String
+  teacher   Teacher  @relation(fields: [teacherId], references: [id])
+  teacherId String
+  rating    Int
+  comment   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("reviews")
+}
+
+model AvailabilitySlot {
+  id        String   @id @default(uuid())
+  teacher   Teacher  @relation(fields: [teacherId], references: [id])
+  teacherId String
+  dayOfWeek Int
+  startTime DateTime
+  endTime   DateTime
+  recurring Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("availability_slots")
+}
+
+enum SessionStatus {
+  PENDING
+  CONFIRMED
+  COMPLETED
+  CANCELLED
 }
