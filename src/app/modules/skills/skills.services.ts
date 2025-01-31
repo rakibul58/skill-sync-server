@@ -192,7 +192,6 @@ const getTeachersBySkill = async (
     },
     skip,
     take: limit,
-    orderBy: { proficiency: "desc" },
   });
 
   const total = await prisma.userSkill.count({
