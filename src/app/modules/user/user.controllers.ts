@@ -14,6 +14,19 @@ const createAdmin = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getUserProfile = catchAsync(
+  async (req: Request & { user?: any }, res: Response) => {
+    const result = await UserServices.getUserProfileFromDB(req.user);
+    sendResponse(res, {
+      statusCode: StatusCodes.OK,
+      success: true,
+      message: "User Profile fetched successfully!",
+      data: result,
+    });
+  }
+);
+
 export const UserControllers = {
   createAdmin,
+  getUserProfile
 };

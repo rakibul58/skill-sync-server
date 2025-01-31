@@ -61,7 +61,6 @@ model Teacher {
   userSkill         UserSkill[]
   session           Session[]
   review            Review[]
-  availabilitySlot  AvailabilitySlot[]
 
   @@map("teachers")
 }
@@ -156,23 +155,8 @@ model Review {
   @@map("reviews")
 }
 
-model AvailabilitySlot {
-  id        String   @id @default(uuid())
-  teacher   Teacher  @relation(fields: [teacherId], references: [id])
-  teacherId String
-  dayOfWeek Int
-  startTime DateTime
-  endTime   DateTime
-  recurring Boolean  @default(true)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@map("availability_slots")
-}
-
 enum SessionStatus {
   PENDING
   CONFIRMED
   COMPLETED
-  CANCELLED
 }

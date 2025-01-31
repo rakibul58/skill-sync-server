@@ -15,4 +15,11 @@ router
     UserControllers.createAdmin
   );
 
+router
+  .route("/me")
+  .get(
+    auth(UserRole.ADMIN, UserRole.TEACHER, UserRole.LEARNER),
+    UserControllers.getUserProfile
+  );
+
 export const UserRoutes = router;

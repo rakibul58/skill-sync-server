@@ -2,6 +2,7 @@ import config from "../../../config";
 import * as bcrypt from "bcrypt";
 import prisma from "../../../shared/prisma";
 import { UserRole } from "@prisma/client";
+import { JwtPayload } from "jsonwebtoken";
 
 const createAdminInDb = async (payload: CreateAdminBody) => {
   const hashedPassword = await bcrypt.hash(
@@ -34,8 +35,30 @@ const createAdminInDb = async (payload: CreateAdminBody) => {
   return result;
 };
 
+const getUserProfileFromDB = async (user: JwtPayload) => {
+  if (user.role === UserRole.ADMIN) {
+    return prisma.admin.findUniqueOrThrow({
+      where: {
+        userId: user.userId,
+      },
+    });
+  } else if (user.role === UserRole.TEACHER) {
+    return prisma.teacher.findUniqueOrThrow({
+      where: {
+        userId: user.userId,
+      },
+    });
+  } else
+    return prisma.learner.findUniqueOrThrow({
+      where: {
+        userId: user.userId,
+      },
+    });
+};
+
 
 
 export const UserServices = {
   createAdminInDb,
+  getUserProfileFromDB,
 };
