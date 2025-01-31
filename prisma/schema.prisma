@@ -102,8 +102,6 @@ model UserSkill {
   teacherId   String
   skill       Skill    @relation(fields: [skillId], references: [id])
   skillId     String
-  proficiency Int      @default(1)
-  verified    Boolean  @default(false)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
