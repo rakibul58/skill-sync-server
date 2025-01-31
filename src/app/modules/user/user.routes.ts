@@ -22,4 +22,16 @@ router
     UserControllers.getUserProfile
   );
 
+router.route("/teachers").get(UserControllers.getAvailableTeachers);
+
+router.route("/").get(auth(UserRole.ADMIN), UserControllers.getAllUsers);
+
+router
+  .route("/teacher/profile")
+  .put(auth(UserRole.TEACHER), UserControllers.updateTeacherProfile);
+
+router
+  .route("/learner/profile")
+  .put(auth(UserRole.LEARNER), UserControllers.updateLearnerProfile);
+
 export const UserRoutes = router;

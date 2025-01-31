@@ -1,4 +1,6 @@
-interface CreateAdminBody {
+import { UserRole } from "@prisma/client";
+
+export interface CreateAdminBody {
   password: string;
   admin: {
     name: string;
@@ -7,13 +9,13 @@ interface CreateAdminBody {
   };
 }
 
-interface UpdateAdminBody {
+export interface UpdateAdminBody {
   name?: string;
   email?: string;
   avatar?: string;
 }
 
-interface CreateTeacherBody {
+export interface CreateTeacherBody {
   password: string;
   teacher: {
     name: string;
@@ -27,7 +29,7 @@ interface CreateTeacherBody {
   };
 }
 
-interface UpdateTeacherBody {
+export interface UpdateTeacherBody {
   name?: string;
   email?: string;
   bio?: string;
@@ -37,7 +39,7 @@ interface UpdateTeacherBody {
   isVerified?: boolean;
 }
 
-interface CreateLearnerBody {
+export interface CreateLearnerBody {
   password: string;
   learner: {
     name: string;
@@ -48,10 +50,22 @@ interface CreateLearnerBody {
   };
 }
 
-interface UpdateLearnerBody {
+export interface UpdateLearnerBody {
   name?: string;
-  email?: string;
   bio?: string;
-  interests?: string;
+  interests?: string[];
   avatar?: string;
+}
+
+export interface TeacherFilterRequest {
+  searchTerm?: string;
+  skill?: string;
+  minRating?: number;
+  maxRating?: number;
+  categoryId?: string;
+}
+
+export interface UserFilterRequest {
+  searchTerm?: string;
+  role?: UserRole;
 }

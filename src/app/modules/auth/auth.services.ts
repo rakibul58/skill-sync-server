@@ -6,6 +6,7 @@ import { jwtHelpers } from "../../../helpers/jwtHelpers";
 import config from "../../../config";
 import { JwtPayload, Secret } from "jsonwebtoken";
 import { UserRole } from "@prisma/client";
+import { CreateLearnerBody, CreateTeacherBody } from "../user/user.interface";
 
 const loginUser = async (payload: { email: string; password: string }) => {
   // checking user exists in the db
